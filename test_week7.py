@@ -77,3 +77,30 @@ print("New trail default unit:", trail4.distance.unit)
 
 # Restore default for later tests
 Trail.set_default_unit("km")
+
+from waypoint_core.itinerary import Itinerary
+
+
+# Test 7: Create an itinerary
+itinerary1 = Itinerary()
+
+itinerary1.add_trail(trail1)
+itinerary1.add_trail(trail2)
+itinerary1.add_trail(trail3)
+
+print("Itinerary 1 total:", itinerary1.total_distance())
+
+
+# Test 8: A second itinerary should be independent
+itinerary2 = Itinerary()
+
+itinerary2.add_trail(trail2)
+
+print("Itinerary 2 total:", itinerary2.total_distance())
+
+
+# Test 9: Adding to itinerary 1 should not change itinerary 2
+itinerary1.add_trail(trail4)
+
+print("Itinerary 1 after adding trail 4:", itinerary1.total_distance())
+print("Itinerary 2 remains:", itinerary2.total_distance())
