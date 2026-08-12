@@ -1,7 +1,6 @@
 from waypoint_core.distance import Distance
-from waypoint_core.trail import Trail
+from waypoint_core.trail import DayHike, TrailRun
 from waypoint_core.itinerary import Itinerary
-
 
 
 # Acceptance Test 1:
@@ -15,7 +14,7 @@ trail_data = {
     "difficulty": "moderate"
 }
 
-trail = Trail.from_dict(trail_data)
+trail = DayHike.from_dict(trail_data)
 
 assert trail.name == "Maple Ridge Trail"
 assert trail.distance.magnitude == 10
@@ -30,7 +29,7 @@ except ValueError:
     pass
 
 try:
-    Trail(
+    DayHike(
         102,
         "Invalid Trail",
         Distance(5, "km"),
@@ -42,10 +41,9 @@ except ValueError:
     pass
 
 
-
 # Acceptance Test 2:
 
-trail_a = Trail(
+trail_a = DayHike(
     200,
     "Trail A",
     Distance(5, "km"),
@@ -53,7 +51,7 @@ trail_a = Trail(
     "easy"
 )
 
-trail_b = Trail(
+trail_b = TrailRun(
     200,
     "Completely Different Trail",
     Distance(20, "km"),
@@ -62,7 +60,6 @@ trail_b = Trail(
 )
 
 assert trail_a == trail_b
-
 
 
 # Acceptance Test 3:
@@ -74,10 +71,9 @@ back_to_km = miles.convert()
 assert abs(back_to_km.magnitude - 10) < 0.0001
 
 
-
 # Acceptance Test 4:
 
-trail_1 = Trail(
+trail_1 = DayHike(
     301,
     "Trail One",
     Distance(5, "km"),
@@ -85,7 +81,7 @@ trail_1 = Trail(
     "easy"
 )
 
-trail_2 = Trail(
+trail_2 = DayHike(
     302,
     "Trail Two",
     Distance(8, "km"),
@@ -93,7 +89,7 @@ trail_2 = Trail(
     "moderate"
 )
 
-trail_3 = Trail(
+trail_3 = TrailRun(
     303,
     "Trail Three",
     Distance(7, "km"),
@@ -110,7 +106,6 @@ itinerary_1.add_trail(trail_3)
 assert itinerary_1.total_distance().magnitude == 20
 
 
-
 # Acceptance Test 5:
 
 itinerary_2 = Itinerary()
@@ -120,7 +115,7 @@ itinerary_2.add_trail(trail_1)
 assert itinerary_2.total_distance().magnitude == 5
 
 itinerary_1.add_trail(
-    Trail(
+    DayHike(
         304,
         "Extra Trail",
         Distance(10, "km"),
@@ -135,10 +130,9 @@ assert itinerary_1.total_distance().magnitude == 30
 assert itinerary_2.total_distance().magnitude == 5
 
 
-
 # Acceptance Test 6:
 
-existing_trail = Trail(
+existing_trail = DayHike(
     400,
     "Existing Trail",
     Distance(10, "km"),
@@ -146,7 +140,7 @@ existing_trail = Trail(
     "easy"
 )
 
-Trail.set_default_unit("mi")
+DayHike.set_default_unit("mi")
 
 new_trail_data = {
     "id": 401,
@@ -156,13 +150,13 @@ new_trail_data = {
     "difficulty": "moderate"
 }
 
-new_trail = Trail.from_dict(new_trail_data)
+new_trail = DayHike.from_dict(new_trail_data)
 
 assert existing_trail.distance.unit == "km"
 assert new_trail.distance.unit == "mi"
 
 # Restore default for future work
-Trail.set_default_unit("km")
+TrailRun.set_default_unit("km")
 
 
 print("ALL WEEK 7 ACCEPTANCE TESTS PASSED")
