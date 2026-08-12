@@ -91,6 +91,22 @@ class Trail(ABC):
 class DayHike(Trail):
     PACE_KM_PER_HOUR = 4.0
 
+    def __init__(
+        self,
+        trail_id,
+        name,
+        distance,
+        elevation_gain_m,
+        difficulty
+    ):
+        super().__init__(
+            trail_id,
+            name,
+            distance,
+            elevation_gain_m,
+            difficulty
+        )
+
     def estimated_time(self):
         distance_km = self.distance.convert().magnitude if self.distance.unit == "mi" else self.distance.magnitude
         return distance_km / self.PACE_KM_PER_HOUR
@@ -101,6 +117,22 @@ class DayHike(Trail):
 
 class BackpackingRoute(Trail):
     PACE_KM_PER_HOUR = 3.0
+
+    def __init__(
+        self,
+        trail_id,
+        name,
+        distance,
+        elevation_gain_m,
+        difficulty
+    ):
+        super().__init__(
+            trail_id,
+            name,
+            distance,
+            elevation_gain_m,
+            difficulty
+        )
 
     def estimated_time(self):
         distance_km = self.distance.convert().magnitude if self.distance.unit == "mi" else self.distance.magnitude
@@ -113,9 +145,65 @@ class BackpackingRoute(Trail):
 class TrailRun(Trail):
     PACE_KM_PER_HOUR = 8.0
 
+    def __init__(
+        self,
+        trail_id,
+        name,
+        distance,
+        elevation_gain_m,
+        difficulty
+    ):
+        super().__init__(
+            trail_id,
+            name,
+            distance,
+            elevation_gain_m,
+            difficulty
+        )
+
     def estimated_time(self):
         distance_km = self.distance.convert().magnitude if self.distance.unit == "mi" else self.distance.magnitude
         return distance_km / self.PACE_KM_PER_HOUR
 
     def summary(self):
-        return f"Trail run: {self.name} - {self.distance}"  
+        return f"Trail run: {self.name} - {self.distance}"
+
+class GearMixin:
+    def gear_list(self):
+        return [
+            "water",
+            "first aid kit",
+            "trail map"
+        ]
+
+
+class GuidanceMixin:
+    def guidance(self):
+        return "Follow marked trail signs and stay on the designated route."
+
+class AdventureDayHike(GearMixin, GuidanceMixin, DayHike):
+    pass
+
+class GuidedDayHike(DayHike):
+    def __init__(
+        self,
+        trail_id,
+        name,
+        distance,
+        elevation_gain_m,
+        difficulty,
+        guide_name
+    ):
+        super().__init__(
+            trail_id,
+            name,
+            distance,
+            elevation_gain_m,
+            difficulty
+        )
+
+        self.guide_name = guide_name
+
+    def summary(self):
+        base_summary = super().summary()
+        return f"{base_summary} - Guide: {self.guide_name}"
