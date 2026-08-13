@@ -1,19 +1,11 @@
-{% load static %}
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Thank You</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
-<body>
+{% block title %}Thank You{% endblock %}
 
+{% block content %}
     <h1>Thank you, {{ name }}!</h1>
 
     <p>Your trail report has been received.</p>
 
     <p>Trail: {{ trail }}</p>
-
-</body>
-</html>
+{% endblock %}
