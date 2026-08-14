@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Trail
+from .models import Park, Trail
 
 
 @admin.register(Trail)
@@ -17,3 +17,8 @@ class TrailAdmin(admin.ModelAdmin):
         "name",
         "difficulty",
     )
+
+@admin.register(Park)
+class ParkAdmin(admin.ModelAdmin):
+    list_display = ("name", "region")
+    search_fields = ("name", "region")
