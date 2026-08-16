@@ -4,12 +4,30 @@
 
 {% block content %}
     <h1>Trail Catalog</h1>
+    <form method="get">
+    <label for="park">Filter by Park:</label>
 
+    <select name="park" id="park">
+        <option value="">All Parks</option>
+
+        {% for park in parks %}
+            <option value="{{ park.id }}"
+                {% if selected_park and selected_park.id == park.id %}
+                    selected
+                {% endif %}>
+                {{ park.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
     <table>
         <thead>
             <tr>
                 <th>#</th>
                 <th>Trail</th>
+                <th>Park</th>
                 <th>Distance (km)</th>
                 <th>Elevation (m)</th>
                 <th>Difficulty</th>
@@ -22,6 +40,13 @@
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ trail.name }}</td>
+                    <td>
+                        {% if trail.park %}
+                        {{ trail.park.name }}
+                        {% else %}
+                        No park assigned
+                        {% endif %}
+                    </td>
                     <td>{{ trail.distance|floatformat:1 }}</td>
                     <td>{{ trail.elevation }}</td>
 
@@ -45,7 +70,7 @@
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="6">No trails available.</td>
+                    <td colspan="7">No trails available.</td>
                 </tr>
             {% endfor %}
         </tbody>
