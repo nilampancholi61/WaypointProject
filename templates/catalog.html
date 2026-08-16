@@ -4,7 +4,24 @@
 
 {% block content %}
     <h1>Trail Catalog</h1>
+    <form method="get">
+    <label for="park">Filter by Park:</label>
 
+    <select name="park" id="park">
+        <option value="">All Parks</option>
+
+        {% for park in parks %}
+            <option value="{{ park.id }}"
+                {% if selected_park and selected_park.id == park.id %}
+                    selected
+                {% endif %}>
+                {{ park.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
     <table>
         <thead>
             <tr>
